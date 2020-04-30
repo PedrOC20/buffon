@@ -8,15 +8,11 @@ class Api::V1::SessionsController < ApplicationController
 
     if @user&.valid_password?(params[:password])
       # render json: user.as_json(only: [:id, :email]), status: :created
-      jwt = JWT.encode(
-        { user_id: @user.id, exp: (Time.now + 2.weeks).to_i }, 
-        Rails.application.secrets.secret_key_base,
-        'HS256'
-      )
+      jwt = WebToken.encode(@user)
 
       render :create, status: :created, locals: { token: jwt }
     else
-      head(:unauthorized)
+      render json: { error: 'invalid_credentials' }, status: :unauthorized
     end
   end
 
