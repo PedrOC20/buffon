@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get 'daily', to: 'pages#daily'
-      resources :players
+      resources :players do
+        resources :comments
+      end
       resources :sessions, only: [:create, :destroy]
       resources :users, only: [:create]
     end 
