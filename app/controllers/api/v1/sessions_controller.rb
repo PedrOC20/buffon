@@ -1,4 +1,6 @@
 class Api::V1::SessionsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:create]
+
   def show
     current_user ? head(:ok) : head(:unauthorized)
   end

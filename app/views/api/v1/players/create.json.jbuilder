@@ -1,5 +1,5 @@
 json.data do
-  json.user do
-    json.partial: 'api/v1/players/contact', player: @player
+  json.player do
+    json.partial: 'api/v1/players', player: @player
   end
 end

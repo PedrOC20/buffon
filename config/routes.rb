@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      get 'daily', to: 'pages#daily'
       resources :players
       resources :sessions, only: [:create, :destroy]
       resources :users, only: [:create]
