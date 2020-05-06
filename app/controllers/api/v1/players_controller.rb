@@ -17,7 +17,6 @@ class Api::V1::PlayersController < ApplicationController
 
     if @player.save
       render json: { status: "SUCCESS", message: "Player created", data: @player }, status: :created
-      # render json: @player, status: :created
     else
       render json: { status: 'ERROR', message: 'Player Not Saved', data: @player.errors }, statu: 400
     end
