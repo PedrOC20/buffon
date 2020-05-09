@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_220810) do
+ActiveRecord::Schema.define(version: 2020_05_09_184352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,42 @@ ActiveRecord::Schema.define(version: 2020_05_05_220810) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_comments_on_player_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "contracts", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.string "title"
+    t.string "file"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_contracts_on_player_id"
+  end
+
+  create_table "evaluations", force: :cascade do |t|
+    t.integer "ball_control"
+    t.integer "passing"
+    t.integer "dribling"
+    t.integer "heading"
+    t.integer "finishing"
+    t.integer "attack"
+    t.integer "defense"
+    t.integer "endurance"
+    t.integer "speed"
+    t.integer "agility"
+    t.integer "strength"
+    t.integer "drive"
+    t.integer "aggressiveness"
+    t.integer "determination"
+    t.integer "responsability"
+    t.integer "leadership"
+    t.integer "self_confidence"
+    t.integer "mental_toughness"
+    t.integer "coachability"
+    t.integer "set_pieces"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "player_id", null: false
+    t.index ["player_id"], name: "index_evaluations_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -42,6 +78,20 @@ ActiveRecord::Schema.define(version: 2020_05_05_220810) do
     t.string "social"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "player_url"
+    t.string "photo"
+    t.string "player_type"
+    t.string "full_name"
+    t.string "tax_number"
+    t.string "address"
+    t.string "passport_number"
+    t.string "email"
+    t.string "weight"
+    t.string "position_2"
+    t.string "position_3"
+    t.string "internal_agent"
+    t.string "agent_contract_expires"
+    t.string "sponsor"
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,4 +108,6 @@ ActiveRecord::Schema.define(version: 2020_05_05_220810) do
 
   add_foreign_key "comments", "players"
   add_foreign_key "comments", "users"
+  add_foreign_key "contracts", "players"
+  add_foreign_key "evaluations", "players"
 end

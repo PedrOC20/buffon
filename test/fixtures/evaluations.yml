@@ -1,0 +1,45 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ball_control: 1
+  passing: 1
+  dribling: 1
+  heading: 1
+  finishing: 1
+  attack: 1
+  defense: 1
+  endurance: 1
+  speed: 1
+  agility: 1
+  strength: 1
+  drive: 1
+  aggressiveness: 1
+  determination: 1
+  responsability: 1
+  leadership: 1
+  self_confidence: 1
+  mental_toughness: 1
+  coachability: 1
+  set_pieces: 1
+
+two:
+  ball_control: 1
+  passing: 1
+  dribling: 1
+  heading: 1
+  finishing: 1
+  attack: 1
+  defense: 1
+  endurance: 1
+  speed: 1
+  agility: 1
+  strength: 1
+  drive: 1
+  aggressiveness: 1
+  determination: 1
+  responsability: 1
+  leadership: 1
+  self_confidence: 1
+  mental_toughness: 1
+  coachability: 1
+  set_pieces: 1

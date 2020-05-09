@@ -1,9 +1,8 @@
 class Api::V1::PlayersController < ApplicationController
   def index 
-    @players = Player.all
-
+    @players = Player.where("player_type LIKE ?", "%Clients%")
     # render :index, status: :ok
-    render json: { status: 'SUCCESS', message: 'All Players', data: @players }, status: :ok
+    render json: { status: 'SUCCESS', message: 'Client Players', data: @players }, status: :ok
   end
 
   def show
@@ -18,7 +17,7 @@ class Api::V1::PlayersController < ApplicationController
     if @player.save
       render json: { status: "SUCCESS", message: "Player created", data: @player }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Player Not Saved', data: @player.errors }, statu: 400
+      render json: { status: 'ERROR', message: 'Player Not Saved', data: @player.errors }, status: 422
     end
   end
 
@@ -59,7 +58,21 @@ class Api::V1::PlayersController < ApplicationController
       :in_team_since,
       :contract_until,
       :equipment,
-      :social
+      :social,
+      :player_url,
+      :photo,
+      :player_type,
+      :full_name,
+      :tax_number,
+      :address,
+      :passport_number,
+      :email,
+      :weight,
+      :position_2,
+      :position_3,
+      :internal_agent,
+      :agent_contract_expires,
+      :sponsor
     )
   end
 end
