@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email: MyString
+  phone_number: 1
+  role: MyString
+  importance: MyString
+  description: MyText
+  club: one
+  how_met: MyString
+  where_met: MyString
+
+two:
+  name: MyString
+  email: MyString
+  phone_number: 1
+  role: MyString
+  importance: MyString
+  description: MyText
+  club: two
+  how_met: MyString
+  where_met: MyString

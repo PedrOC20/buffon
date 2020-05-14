@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_09_184352) do
+ActiveRecord::Schema.define(version: 2020_05_14_104550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "clubs", force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.date "founded"
+    t.string "address"
+    t.string "email"
+    t.string "president"
+    t.string "website"
+    t.integer "phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.bigint "player_id", null: false
@@ -23,6 +36,21 @@ ActiveRecord::Schema.define(version: 2020_05_09_184352) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_comments_on_player_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.integer "phone_number"
+    t.string "role"
+    t.string "importance"
+    t.text "description"
+    t.bigint "club_id", null: false
+    t.string "how_met"
+    t.string "where_met"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["club_id"], name: "index_contacts_on_club_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -108,6 +136,7 @@ ActiveRecord::Schema.define(version: 2020_05_09_184352) do
 
   add_foreign_key "comments", "players"
   add_foreign_key "comments", "users"
+  add_foreign_key "contacts", "clubs"
   add_foreign_key "contracts", "players"
   add_foreign_key "evaluations", "players"
 end
