@@ -8,7 +8,8 @@ class Api::V1::ClubsController < ApplicationController
   def show
     @club = Club.find(params[:id])
 
-    render json: {  status: 'SUCCESS', message: 'Club Showed', data: @club }, status: :ok
+    render json: @club.to_json(:include => [:contacts, :club_requests]), status: :ok
+    # render json: {  status: 'SUCCESS', message: 'Club Showed', data: @club }, status: :ok
   end
 
   def create

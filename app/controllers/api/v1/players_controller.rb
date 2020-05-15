@@ -8,7 +8,8 @@ class Api::V1::PlayersController < ApplicationController
   def show
     @player = Player.find(params[:id])
 
-    render json: {  status: 'SUCCESS', message: 'Player showed', data: @player }, status: :ok
+    render json: @player.to_json(:include => [:comments, :evaluation]), status: :ok
+    # render json: {  status: 'SUCCESS', message: 'Player showed', data: @player.to_json(:include => [:comments, :evaluation]) }, status: :ok
   end
 
   def create

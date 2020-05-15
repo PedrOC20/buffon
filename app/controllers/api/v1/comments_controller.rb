@@ -5,6 +5,10 @@ class Api::V1::CommentsController < ApplicationController
     render json: { status: "SUCCESS", message: "All comments", data: @comments}, status: :ok
   end
 
+  def daily
+    @comments = Comment.where(updated_at: (Time.now - 24.hours)..Time.now)
+  end
+
   def show
     @comment = Comment.find(params[:id])
 

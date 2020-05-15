@@ -2,7 +2,8 @@ class Api::V1::ClubRequestsController < ApplicationController
   def index
     @clubs = Club.includes(:club_requests)
 
-    render json: { status: 'SUCCESS', message: 'Club Requests', data: @clubs }, status: :ok
+    render json: @clubs.to_json(:include => [:club_requests]), status: :ok
+    # render json: { status: 'SUCCESS', message: 'Club Requests', data: @clubs }, status: :ok
   end
 
   def show
