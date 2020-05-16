@@ -73,7 +73,8 @@ class Api::V1::PlayersController < ApplicationController
       :position_3,
       :internal_agent,
       :agent_contract_expires,
-      :sponsor
+      :sponsor,
+      :phone_number
     )
   end
 end
