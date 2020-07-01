@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:create]
 
@@ -7,7 +9,7 @@ class Api::V1::SessionsController < ApplicationController
   
   def create
     @user = User.where(email: params[:email]).first
-
+    
     if @user&.valid_password?(params[:password])
       # render json: user.as_json(only: [:id, :email]), status: :created
       jwt = WebToken.encode(@user)
