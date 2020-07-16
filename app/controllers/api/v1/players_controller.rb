@@ -2,7 +2,7 @@ require 'transfer_market'
 
 class Api::V1::PlayersController < ApplicationController
   def index 
-    @players = Player.where("player_type LIKE ?", "%Clients%")
+    @players = Player.where("player_type LIKE ?", "%Client%")
     # render :index, status: :ok
     render json: { status: 'SUCCESS', message: 'Client Players', data: @players }, status: :ok
   end

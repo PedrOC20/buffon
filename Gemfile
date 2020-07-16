@@ -37,6 +37,9 @@ gem 'rack-cors'
 gem 'devise'
 gem 'jwt'
 
+# Host Images
+gem 'cloudinary'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
