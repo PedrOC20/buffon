@@ -1,3 +1,5 @@
+require 'club_transfer_market'
+
 class Api::V1::ClubsController < ApplicationController
   def index 
     @clubs = Club.all
@@ -14,6 +16,18 @@ class Api::V1::ClubsController < ApplicationController
 
   def create
     @club = Club.new(club_params)
+
+    if @club.club_url.empty?
+      @club
+    else
+      club_info = TransferMarketScraper.scrape(@club.club_url)
+      @club.name = club_info[:name]
+      @club.address = club_info[:address]
+      @club.phone_number = club_info[:phone_number]
+      @club.founded = club_info[:founded]
+      @club.website = club_info[:website]
+      @club.logo = club_info[:logo]
+    end
 
     if @club.save
       render json: { status: "SUCCESS", message: "Club created", data: @club }, status: :created
@@ -53,7 +67,8 @@ class Api::V1::ClubsController < ApplicationController
       :email,
       :president,
       :website,
-      :phone_number
+      :phone_number,
+      :club_url
     )
   end
 end
