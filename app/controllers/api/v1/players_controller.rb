@@ -1,6 +1,8 @@
+require 'transfer_market'
+
 class Api::V1::PlayersController < ApplicationController
   def index 
-    @players = Player.where("player_type LIKE ?", "%Clients%")
+    @players = Player.where("player_type LIKE ?", "%Client%")
     # render :index, status: :ok
     render json: { status: 'SUCCESS', message: 'Client Players', data: @players }, status: :ok
   end
@@ -14,6 +16,25 @@ class Api::V1::PlayersController < ApplicationController
 
   def create
     @player = Player.new(player_params)
+
+    if @player.player_url.empty?
+      @player
+    else
+      player_info = TransferMarketScraper.scrape(@player.player_url)
+      @player.name = player_info[:nickname]
+      @player.full_name = player_info[:complete_name]
+      @player.photo = player_info[:photo]
+      @player.birth_date = player_info[:birth_date]
+      @player.birthplace = player_info[:birthplace]
+      @player.height = player_info[:height]
+      @player.nacionality = player_info[:nationality]
+      @player.position = player_info[:position]
+      @player.foot = player_info[:foot]
+      @player.manager = player_info[:manager]
+      @player.current_club = player_info[:current_club]
+      @player.in_team_since = player_info[:in_team_since]
+      @player.contract_until = player_info[:contract_until]
+    end
 
     if @player.save
       render json: { status: "SUCCESS", message: "Player created", data: @player }, status: :created

@@ -9,6 +9,7 @@ class CreateClubs < ActiveRecord::Migration[6.0]
       t.string :president
       t.string :website
       t.integer :phone_number
+      t.string :club_url
 
       t.timestamps
     end
