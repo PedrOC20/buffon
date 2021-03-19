@@ -1,6 +1,7 @@
 class CreateEvaluations < ActiveRecord::Migration[6.0]
   def change
     create_table :evaluations do |t|
+      t.references :player, null: false, foreign_key: true
       t.integer :ball_control
       t.integer :passing
       t.integer :dribling

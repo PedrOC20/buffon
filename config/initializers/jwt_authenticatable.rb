@@ -7,7 +7,7 @@ module Devise
 
         payload = WebToken.decode(token)
         return fail(:invalid) if payload == :expired
-
+        
         resource = mapping.to.find(payload['user_id'])
         return fail(:not_found_in_database) unless resource
 

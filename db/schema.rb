@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_180208) do
+ActiveRecord::Schema.define(version: 2021_03_17_122841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_180208) do
     t.string "email"
     t.string "president"
     t.string "website"
-    t.integer "phone_number"
+    t.string "phone_number"
     t.string "club_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_180208) do
   end
 
   create_table "evaluations", force: :cascade do |t|
+    t.bigint "player_id", null: false
     t.integer "ball_control"
     t.integer "passing"
     t.integer "dribling"
@@ -97,26 +98,24 @@ ActiveRecord::Schema.define(version: 2020_06_29_180208) do
     t.integer "set_pieces"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "player_id", null: false
     t.index ["player_id"], name: "index_evaluations_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|
     t.string "name"
-    t.date "birth_date"
+    t.string "birth_date"
     t.string "birthplace"
     t.integer "age"
+    t.string "height"
     t.string "nacionality"
     t.string "position"
     t.string "foot"
     t.string "manager"
     t.string "current_club"
-    t.date "in_team_since"
-    t.date "contract_until"
+    t.string "in_team_since"
+    t.string "contract_until"
     t.string "equipment"
     t.string "social"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "player_url"
     t.string "photo"
     t.string "player_type"
@@ -132,20 +131,41 @@ ActiveRecord::Schema.define(version: 2020_06_29_180208) do
     t.string "agent_contract_expires"
     t.string "sponsor"
     t.string "phone_number"
-    t.string "height"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_contracts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "contract1"
+    t.string "contract2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_contracts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.string "address"
+    t.string "fiscal_number"
+    t.string "picture"
+    t.string "phone_number"
+    t.boolean "active"
+    t.boolean "admin"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -156,4 +176,5 @@ ActiveRecord::Schema.define(version: 2020_06_29_180208) do
   add_foreign_key "contacts", "clubs"
   add_foreign_key "contracts", "players"
   add_foreign_key "evaluations", "players"
+  add_foreign_key "user_contracts", "users"
 end
