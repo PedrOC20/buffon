@@ -3,6 +3,7 @@ lock "~> 3.16.0"
 
 set :application, "buffon"
 set :repo_url, "git@github.com:PedrOC20/buffon.git"
+set :branch, "development"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
