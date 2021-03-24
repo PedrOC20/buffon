@@ -1,2 +1,2 @@
 json.token token
-json.user @user
+json.user @user.as_json
