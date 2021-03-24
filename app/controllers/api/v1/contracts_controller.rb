@@ -1,14 +1,22 @@
 class Api::V1::ContractsController < ApplicationController
   def index
-    @contracts = Contract.all
+    begin
+      @contracts = Contract.all
 
-    render json: { status: "SUCCESS", message: "All contracts", data: @contracts}, status: :ok
+      render json: { status: "SUCCESS", message: "Contracts", data: @contracts}, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @contract = Contract.find(params[:id])
+    begin
+      @contract = Contract.find(params[:id])
 
-    render json: {  status: 'SUCCESS', message: 'Contract showed', data: @contract }, status: :ok
+      render json: {  status: 'SUCCESS', message: 'Contract', data: @contract }, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def create
@@ -27,9 +35,9 @@ class Api::V1::ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
 
     if @contract.destroy
-      render json: { status: 'SUCCESS', message: 'Contractt Deleted' }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Contract Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Contract not deleted', data: @contract.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Contract Not Deleted', data: @contract.errors }, status: :unprocessable_entity
     end
   end
 

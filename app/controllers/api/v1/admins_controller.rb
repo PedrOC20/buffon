@@ -2,16 +2,21 @@ class Api::V1::AdminsController < ApplicationController
   before_action :check_if_admin?
 
   def index
-    @users = User.all
+    begin
+      @users = User.all
 
-    # render json: @clubs.to_json(:include => [:club_requests]), status: :ok
-    render json: { status: 'SUCCESS', message: 'Users', data: @users }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Users', data: @users.as_json }, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   private
     
   def check_if_admin?
-    current_user.is_admin?
+    unless current_user.is_admin? && @is_admin
+      render json: {message: "NOT AUTHORIZED"}, status: 401
+    end
   end
 end
   

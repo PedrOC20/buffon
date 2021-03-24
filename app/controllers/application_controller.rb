@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  # before_action :user_active?
   before_action :process_token
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -22,13 +23,22 @@ class ApplicationController < ActionController::API
       begin
         jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1].remove('"'), Rails.application.secrets.secret_key_base).first
         @user_id = jwt_payload['id']
-      rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-        head :unauthorized
+        @is_admin = jwt_payload['is_admin']
+      rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError => e
+        # head :unauthorized
+        render json: {message: e.message}, status: 401
       end
+    else
+      # head :unauthorized
+      render json: {message: "NOT AUTHORIZED"}, status: 401
     end
   end
 
   def current_user
     @current_user ||= User.find(@user_id)
+  end
+
+  def user_active?
+    head :unhautorized unless current_user.is_active?
   end
 end

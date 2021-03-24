@@ -141,4 +141,4 @@ class TransferMarketScraper
   end
 end
 
-p TransferMarketScraper.scrape("https://www.transfermarkt.com/cristiano-ronaldo/profil/spieler/8198")
+# p TransferMarketScraper.scrape("https://www.transfermarkt.com/cristiano-ronaldo/profil/spieler/8198")

@@ -2,16 +2,23 @@ require 'club_transfer_market'
 
 class Api::V1::ClubsController < ApplicationController
   def index 
-    @clubs = Club.all
-    # render :index, status: :ok
-    render json: { status: 'SUCCESS', message: 'All clubs', data: @clubs }, status: :ok
+    begin
+      @clubs = Club.all
+
+      render json: { status: 'SUCCESS', message: 'Clubs', data: @clubs }, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @club = Club.find(params[:id])
+    begin
+      @club = Club.find(params[:id])
 
-    render json: @club.to_json(:include => [:contacts, :club_requests]), status: :ok
-    # render json: {  status: 'SUCCESS', message: 'Club Showed', data: @club }, status: :ok
+      render json: {  status: 'SUCCESS', message: 'Club', data: @club.to_json(:include => [:contacts, :club_requests]) }, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def create
@@ -20,7 +27,7 @@ class Api::V1::ClubsController < ApplicationController
     if @club.club_url.empty?
       @club
     else
-      club_info = TransferMarketScraper.scrape(@club.club_url)
+      club_info = ClubTransferMarket.scrape(@club.club_url)
       @club.name = club_info[:name]
       @club.address = club_info[:address]
       @club.phone_number = club_info[:phone_number]
@@ -30,9 +37,9 @@ class Api::V1::ClubsController < ApplicationController
     end
 
     if @club.save
-      render json: { status: "SUCCESS", message: "Club created", data: @club }, status: :created
+      render json: { status: "SUCCESS", message: "Club Created", data: @club }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Club Not Saved', data: @club.errors }, status: 422
+      render json: { status: 'ERROR', message: 'Club Not Created', data: @club.errors }, status: 422
     end
   end
 
@@ -42,7 +49,7 @@ class Api::V1::ClubsController < ApplicationController
     if @club.update(club_params)
       render json: { status: 'SUCCESS', message: 'Club Updated', data: @club }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Club not updated', data: @club.errors }, status: 400
+      render json: { status: 'ERROR', message: 'Club Not Updated', data: @club.errors }, status: 400
     end
   end
 
@@ -52,7 +59,7 @@ class Api::V1::ClubsController < ApplicationController
     if @club.destroy
       render json: { status: 'SUCCESS', message: 'Club Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Club not deleted', data: @club.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Club Not Deleted', data: @club.errors }, status: :unprocessable_entity
     end
   end
 

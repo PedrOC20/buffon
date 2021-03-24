@@ -1,15 +1,22 @@
 class Api::V1::ClubRequestsController < ApplicationController
   def index
-    @clubs = Club.includes(:club_requests)
+    begin
+      @clubs = Club.includes(:club_requests)
 
-    render json: @clubs.to_json(:include => [:club_requests]), status: :ok
-    # render json: { status: 'SUCCESS', message: 'Club Requests', data: @clubs }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Club Requests', data: @clubs.as_json(:include => [:club_requests]) }, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @club_request = ClubRequest.find(params[:id])
+    begin
+      @club_request = ClubRequest.find(params[:id])
 
-    render json: { status: 'SUCCESS', message: 'Club Request showed', data: @club_request}, status: :ok
+      render json: { status: 'SUCCESS', message: 'Club Request showed', data: @club_request}, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def update

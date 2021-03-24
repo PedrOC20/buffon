@@ -1,14 +1,22 @@
 class Api::V1::EvaluationsController < ApplicationController
   def index
-    @evaluations = Evaluation.all
+    begin
+      @evaluations = Evaluation.all
 
-    render json: { status: "SUCCESS", message: "All evaluations", data: @evaluations}, status: :ok
+      render json: { status: "SUCCESS", message: "Evaluations", data: @evaluations}, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @evaluation= Evaluation.find(params[:id])
+    begin
+      @evaluation= Evaluation.find(params[:id])
 
-    render json: {  status: 'SUCCESS', message: 'Evaluation showed', data: @evaluation}, status: :ok
+      render json: {  status: 'SUCCESS', message: 'Evaluation', data: @evaluation}, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def create
@@ -29,7 +37,7 @@ class Api::V1::EvaluationsController < ApplicationController
     if @evaluation.destroy
       render json: { status: 'SUCCESS', message: 'Evaluation Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Evaluation not deleted', data: @evaluation.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Evaluation Not Deleted', data: @evaluation.errors }, status: :unprocessable_entity
     end
   end
 

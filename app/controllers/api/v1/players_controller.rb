@@ -1,17 +1,24 @@
-require 'transfer_market'
+require 'transfer_market_scraper'
 
 class Api::V1::PlayersController < ApplicationController
   def index 
-    @players = Player.where("player_type LIKE ?", "%Client%")
-    # render :index, status: :ok
-    render json: { status: 'SUCCESS', message: 'Client Players', data: @players }, status: :ok
+    begin
+      @players = Player.where("player_type LIKE ?", "%Client%")
+
+      render json: {status: "SUCESS", message: "Clients", data: @players.as_json}, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @player = Player.find(params[:id])
+    begin
+      @player = Player.find(params[:id])
 
-    render json: @player.to_json(:include => [:comments, :evaluation]), status: :ok
-    # render json: {  status: 'SUCCESS', message: 'Player showed', data: @player.to_json(:include => [:comments, :evaluation]) }, status: :ok
+      render json: {status: "SUCESS", message: "Player", data: @player.as_json(:include => [:comments, :evaluation])}, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def create
@@ -37,9 +44,9 @@ class Api::V1::PlayersController < ApplicationController
     end
 
     if @player.save
-      render json: { status: "SUCCESS", message: "Player created", data: @player }, status: :created
+      render json: { status: "SUCCESS", message: "Player", data: @player }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Player Not Saved', data: @player.errors }, status: 422
+      render json: { status: 'ERROR', message: 'Player Not Created', data: @player.errors }, status: 422
     end
   end
 
@@ -49,7 +56,7 @@ class Api::V1::PlayersController < ApplicationController
     if @player.update(player_params)
       render json: { status: 'SUCCESS', message: 'Player Updated', data: @player }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Player not updated', data: @player.errors }, status: 400
+      render json: { status: 'ERROR', message: 'Player Not Updated', data: @player.errors }, status: 400
     end
   end
 
@@ -59,7 +66,7 @@ class Api::V1::PlayersController < ApplicationController
     if @player.destroy
       render json: { status: 'SUCCESS', message: 'Player Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Player not deleted', data: @player.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Player Not deleted', data: @player.errors }, status: :unprocessable_entity
     end
   end
 

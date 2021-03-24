@@ -1,24 +1,31 @@
 class Api::V1::ContactsController < ApplicationController
   def index
-    @clubs = Club.all
+    begin
+      @clubs = Club.all
 
-    render json: @clubs.to_json(:include => [:contacts]), status: :ok
-    # render json: { status: 'SUCCESS', message: 'All Contacts', data: @contacts }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Contacts', data: @clubs.as_json(:include => [:contacts]) }, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @contact = Contact.find(params[:id])
+    begin
+      @contact = Contact.find(params[:id])
 
-    render json: { status: 'SUCCESS', message: 'Contact showed', data: @contact }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Contact', data: @contact }, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def update
     @contact = Contact.find(params[:id])
     
     if @contact.update(contact_params)
-      render json: { status: 'SUCCESS', message: 'Conytact Updated', data: @contact }, status: :created
+      render json: { status: 'SUCCESS', message: 'Contact Updated', data: @contact }, status: :created
     else
-      render json: { status: 'ERROR', message: 'Contact not updated', data: @contact.errors }, status: 400
+      render json: { status: 'ERROR', message: 'Contact Not Updated', data: @contact.errors }, status: 400
     end
   end
 
@@ -29,7 +36,7 @@ class Api::V1::ContactsController < ApplicationController
     if @contact.destroy
       render json: { status: 'SUCCESS', message: 'Contact Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Contact not deleted', data: @contact.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Contact Not Deleted', data: @contact.errors }, status: :unprocessable_entity
     end
   end
 

@@ -7,6 +7,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
   has_many :comments
+  scope :active, ->{ where(active: true) }
 
   def generate_jwt
     JWT.encode({id: self.id, is_admin: self.is_admin?, exp: 30.days.from_now.to_i}, Rails.application.secrets.secret_key_base)
@@ -14,5 +15,9 @@ class User < ApplicationRecord
 
   def is_admin?
     self.admin?
+  end
+
+  def is_active?
+    self.active?
   end
 end

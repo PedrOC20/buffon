@@ -1,18 +1,22 @@
 class Api::V1::CommentsController < ApplicationController
   def index
-    @comments = Comment.all
+    begin
+      @comments = Comment.all
 
-    render json: { status: "SUCCESS", message: "All comments", data: @comments}, status: :ok
-  end
-
-  def daily
-    @comments = Comment.where(updated_at: (Time.now - 24.hours)..Time.now)
+      render json: { status: "SUCCESS", message: "Comments", data: @comments}, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def show
-    @comment = Comment.find(params[:id])
+    begin
+      @comment = Comment.find(params[:id])
 
-    render json: {  status: 'SUCCESS', message: 'Comment showed', data: @comment }, status: :ok
+      render json: {  status: "SUCCESS", message: "Comment", data: @comment }, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {message: e.message, status: 500}
+    end
   end
 
   def create
@@ -20,6 +24,7 @@ class Api::V1::CommentsController < ApplicationController
     @player = Player.find(params[:player_id])
     @comment.player_id = params[:player_id]
     @comment.user = current_user
+
     if @comment.save
       render json: { status: "SUCCESS", message: "Comment Created", data: @comment }, status: :created
     else
@@ -33,7 +38,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.destroy
       render json: { status: 'SUCCESS', message: 'Comment Deleted' }, status: :ok
     else
-      render json: { status: 'ERROR', message: 'Comment not deleted', data: @comment.errors }, status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Comment Not deleted', data: @comment.errors }, status: :unprocessable_entity
     end
   end
 
