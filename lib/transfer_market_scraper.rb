@@ -2,7 +2,6 @@ require 'open-uri'
 require 'nokogiri'
 require 'mechanize'
 require 'json'
-require 'byebug'
 
 class TransferMarketScraper
   def self.scrape(url)
