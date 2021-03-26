@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: buffon_production
-  username: buffon
+  username: deploy
   password: <%= ENV['BUFFON_DATABASE_PASSWORD'] %>
