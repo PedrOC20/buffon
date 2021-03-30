@@ -5,7 +5,7 @@ class Api::V1::ClubsController < ApplicationController
     begin
       @clubs = Club.all
 
-      render json: { status: 'SUCCESS', message: 'Clubs', data: @clubs }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Clubs', data: @clubs.as_json }, status: :ok
     rescue StandardError => e
       render json: {message: e.message, status: 500}
     end
@@ -15,7 +15,7 @@ class Api::V1::ClubsController < ApplicationController
     begin
       @club = Club.find(params[:id])
 
-      render json: {  status: 'SUCCESS', message: 'Club', data: @club.to_json(:include => [:contacts, :club_requests]) }, status: :ok
+      render json: {  status: 'SUCCESS', message: 'Club', data: @club.as_json(:include => [:contacts, :club_requests]) }, status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: {message: e.message, status: 500}
     end

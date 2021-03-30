@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         resources :evaluations
       end
       resources :sessions, only: [:create, :destroy]
-      resources :users, only: [:create, :show]
+      resources :users, only: [:create, :show, :update]
     end 
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

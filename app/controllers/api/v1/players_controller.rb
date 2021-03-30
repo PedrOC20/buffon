@@ -15,7 +15,16 @@ class Api::V1::PlayersController < ApplicationController
     begin
       @player = Player.find(params[:id])
 
-      render json: {status: "SUCESS", message: "Player", data: @player.as_json(:include => [:comments, :evaluation])}, status: :ok
+      render json: {
+        status: "SUCESS", 
+        message: "Player", 
+        data: @player.as_json(
+          include: [
+            :comments => {:include => {:user => {only: [:username, :picture]}}},
+            :evaluation => {:include => {:user => {only: [:username, :picture]}}}
+          ]
+        )
+      }, status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: {message: e.message, status: 500}
     end

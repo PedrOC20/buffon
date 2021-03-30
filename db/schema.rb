@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
 
   create_table "evaluations", force: :cascade do |t|
     t.bigint "player_id", null: false
+    t.bigint "user_id", null: false
     t.integer "ball_control"
     t.integer "passing"
     t.integer "dribling"
@@ -99,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_evaluations_on_player_id"
+    t.index ["user_id"], name: "index_evaluations_on_user_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -176,5 +178,6 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
   add_foreign_key "contacts", "clubs"
   add_foreign_key "contracts", "players"
   add_foreign_key "evaluations", "players"
+  add_foreign_key "evaluations", "users"
   add_foreign_key "user_contracts", "users"
 end

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
-  # before_action :user_active?
   before_action :process_token
+  before_action :user_active?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   private

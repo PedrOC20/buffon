@@ -23,7 +23,8 @@ class Api::V1::EvaluationsController < ApplicationController
     @evaluation = Evaluation.new(evaluation_params)
     @player = Player.find(params[:player_id])
     @evaluation.player_id = params[:player_id]
-    # @evaluation.user = current_user
+    @evaluation.user = current_user
+    
     if @evaluation.save
       render json: { status: "SUCCESS", message: "Evaluation Created", data: @evaluation }, status: :created
     else

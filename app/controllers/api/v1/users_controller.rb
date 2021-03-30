@@ -21,10 +21,26 @@ module Api::V1
       end
     end
 
+    def update
+      @user = User.find(params[:id])
+  
+      if @user.update(user_params)
+        render json: { status: 'SUCCESS', message: 'User Updated', data: @user }, status: :created
+      else
+        render json: { status: 'ERROR', message: 'User Not Updated', data: @user.errors }, status: 400
+      end
+    end
+
     private
 
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.require(:user).permit(
+        :email,
+        :first_name,
+        :last_name,
+        :username,
+        :password,
+        :password_confirmation)
     end
 
     def is_current_user?

@@ -1,5 +1,6 @@
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :process_token, only: [:create]
+  skip_before_action :user_active?, onlt: [:create]
 
   def show
     current_user ? head(:ok) : head(:unauthorized)
