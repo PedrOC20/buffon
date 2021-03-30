@@ -6,8 +6,38 @@ class ApplicationController < ActionController::API
   private
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :username, :address, :fiscal_number, :picture, :phone_number, :active, :admin])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :username, :address, :fiscal_number, :picture, :phone_number, :active, :admin])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [
+      :email,
+      :first_name,
+      :last_name,
+      :username,
+      :address,
+      :fiscal_number,
+      :picture,
+      :phone_number,
+      :birth_date,
+      :active,
+      :admin,
+      :password,
+      :password_confirmation,
+      :last_sign_in_at
+    ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
+      :email,
+      :first_name,
+      :last_name,
+      :username,
+      :address,
+      :fiscal_number,
+      :picture,
+      :phone_number,
+      :birth_date,
+      :active,
+      :admin,
+      :password,
+      :password_confirmation,
+      :last_sign_in_at
+    ])
   end
 
   def authenticate_user!(options = {})

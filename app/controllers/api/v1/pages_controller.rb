@@ -8,7 +8,7 @@ class Api::V1::PagesController < ApplicationController
         message: "Last 24H Comments",
         data: @comments.as_json(
           include: [ 
-            user: { only: :username },
+            user: { only: [:username, :picture] },
             player: { only: [:name, :photo] }
           ]
         )

@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :fiscal_number
       t.string :picture
       t.string :phone_number
+      t.string :birth_date
       t.boolean :active
       t.boolean :admin
 

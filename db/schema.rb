@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
     t.string "fiscal_number"
     t.string "picture"
     t.string "phone_number"
+    t.string "birth_date"
     t.boolean "active"
     t.boolean "admin"
     t.string "email", default: "", null: false

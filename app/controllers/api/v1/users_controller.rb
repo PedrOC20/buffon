@@ -39,8 +39,17 @@ module Api::V1
         :first_name,
         :last_name,
         :username,
+        :address,
+        :fiscal_number,
+        :picture,
+        :phone_number,
+        :birth_date,
+        :active,
+        :admin,
         :password,
-        :password_confirmation)
+        :password_confirmation,
+        :last_sign_in_at
+      )
     end
 
     def is_current_user?
