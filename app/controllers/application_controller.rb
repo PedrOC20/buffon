@@ -51,15 +51,13 @@ class ApplicationController < ActionController::API
   def process_token
     if request.headers['Authorization'].present?
       begin
-        jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1].remove('"'), Rails.application.secrets.secret_key_base).first
+        jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1].remove('"'), Rails.application.credentials.secret_key_base).first
         @user_id = jwt_payload['id']
         @is_admin = jwt_payload['is_admin']
       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError => e
-        # head :unauthorized
         render json: {message: e.message}, status: 401
       end
     else
-      # head :unauthorized
       render json: {message: "NOT AUTHORIZED"}, status: 401
     end
   end

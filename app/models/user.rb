@@ -11,7 +11,7 @@ class User < ApplicationRecord
   scope :active, ->{ where(active: true) }
 
   def generate_jwt
-    JWT.encode({id: self.id, is_admin: self.is_admin?, exp: 30.days.from_now.to_i}, Rails.application.secrets.secret_key_base)
+    JWT.encode({id: self.id, is_admin: self.is_admin?, exp: 30.days.from_now.to_i}, Rails.application.credentials.secret_key_base)
   end
 
   def is_admin?
