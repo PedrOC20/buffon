@@ -3,7 +3,7 @@ class Api::V1::EvaluationsController < ApplicationController
     begin
       @evaluations = Evaluation.all
 
-      render json: { status: "SUCCESS", message: "Evaluations", data: @evaluations}, status: :ok
+      render json: { status: "SUCCESS", message: "Evaluations", data: @evaluations.as_json}, status: :ok
     rescue StandardError => e
       render json: {message: e.message, status: 500}
     end
@@ -13,7 +13,16 @@ class Api::V1::EvaluationsController < ApplicationController
     begin
       @evaluation= Evaluation.find(params[:id])
 
-      render json: {  status: 'SUCCESS', message: 'Evaluation', data: @evaluation}, status: :ok
+      render json: {
+        status: 'SUCCESS',
+        message: 'Evaluation',
+        data: @evaluation.as_json(
+          include: [ 
+            user: { only: [:username, :picture] },
+            player: { only: [:name, :photo] }
+          ]
+        )
+      }, status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: {message: e.message, status: 500}
     end
@@ -26,7 +35,16 @@ class Api::V1::EvaluationsController < ApplicationController
     @evaluation.user = current_user
     
     if @evaluation.save
-      render json: { status: "SUCCESS", message: "Evaluation Created", data: @evaluation }, status: :created
+      render json: {
+        status: "SUCCESS",
+        message: "Evaluation Created",
+        data: @evaluation.as_json(
+          include: [ 
+            user: { only: [:username, :picture] },
+            player: { only: [:name, :photo] }
+          ]
+        )
+      }, status: :created
     else
       render json: { status: 'ERROR', message: 'Evaluation Not Created', data: @evaluation.errors }, statu: 400
     end
