@@ -69,4 +69,10 @@ class ApplicationController < ActionController::API
   def user_active?
     head :unhautorized unless current_user.is_active?
   end
+
+  def check_if_admin?
+    unless current_user.is_admin? && @is_admin
+      render json: {message: "PERMISSION DENIED!"}, status: 101
+    end
+  end
 end

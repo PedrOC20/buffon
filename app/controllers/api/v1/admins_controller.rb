@@ -10,13 +10,5 @@ class Api::V1::AdminsController < ApplicationController
       render json: {message: e.message, status: 500}
     end
   end
-
-  private
-    
-  def check_if_admin?
-    unless current_user.is_admin? && @is_admin
-      render json: {message: "NOT AUTHORIZED"}, status: 401
-    end
-  end
 end
   

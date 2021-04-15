@@ -17,13 +17,15 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
 
   create_table "club_requests", force: :cascade do |t|
     t.string "position"
-    t.integer "budget"
-    t.integer "salary"
+    t.string "budget"
+    t.string "salary"
     t.text "description"
     t.bigint "club_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["club_id"], name: "index_club_requests_on_club_id"
+    t.index ["user_id"], name: "index_club_requests_on_user_id"
   end
 
   create_table "clubs", force: :cascade do |t|
@@ -53,16 +55,18 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
   create_table "contacts", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.integer "phone_number"
+    t.string "phone_number"
     t.string "role"
     t.string "importance"
     t.text "description"
     t.bigint "club_id", null: false
+    t.bigint "user_id", null: false
     t.string "how_met"
     t.string "where_met"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["club_id"], name: "index_contacts_on_club_id"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -174,9 +178,11 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
   end
 
   add_foreign_key "club_requests", "clubs"
+  add_foreign_key "club_requests", "users"
   add_foreign_key "comments", "players"
   add_foreign_key "comments", "users"
   add_foreign_key "contacts", "clubs"
+  add_foreign_key "contacts", "users"
   add_foreign_key "contracts", "players"
   add_foreign_key "evaluations", "players"
   add_foreign_key "evaluations", "users"

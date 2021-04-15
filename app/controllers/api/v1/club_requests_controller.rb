@@ -1,9 +1,18 @@
 class Api::V1::ClubRequestsController < ApplicationController
+  before_action :check_if_admin?, only: [:destroy]
+
   def index
     begin
       @clubs = Club.includes(:club_requests)
 
-      render json: { status: 'SUCCESS', message: 'Club Requests', data: @clubs.as_json(:include => [:club_requests]) }, status: :ok
+      render json: { 
+        status: 'SUCCESS', 
+        message: 'Club Requests', 
+        data: @clubs.as_json(
+          include: 
+            [:club_requests]
+        ) 
+      }, status: :ok
     rescue StandardError => e
       render json: {message: e.message, status: 500}
     end
@@ -13,7 +22,16 @@ class Api::V1::ClubRequestsController < ApplicationController
     begin
       @club_request = ClubRequest.find(params[:id])
 
-      render json: { status: 'SUCCESS', message: 'Club Request showed', data: @club_request}, status: :ok
+      render json: {
+        status: 'SUCCESS',
+        message: 'Club Request showed',
+        data: @club_request.as_json(
+          include: [
+            user: {only: [:username, :picture]},
+            club: {only: [:name, :logo]}
+          ]
+        )
+      }, status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: {message: e.message, status: 500}
     end
@@ -34,7 +52,7 @@ class Api::V1::ClubRequestsController < ApplicationController
     @club = @club_request.club
     
     if @club_request.destroy
-      render json: { status: 'SUCCESS', message: 'Club request Deleted' }, status: :ok
+      render json: { status: 'SUCCESS', message: 'Club request Deleted' }, status: 204
     else
       render json: { status: 'ERROR', message: 'Club request not deleted', data: @club_request.errors }, status: :unprocessable_entity
     end

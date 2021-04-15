@@ -1,13 +1,15 @@
 module Api::V1
   class UsersController < ApplicationController
     before_action :is_current_user?, only: :show
+    before_action :check_if_admin?, only: :create
+
     def create
       @user = User.new(user_params)
 
       if @user.save
-        render json: { status: "SUCCESS", message: "User Created", data: @user }, status: :created
+        render json: { status: "SUCCESS", message: "User Created", data: @user.as_json }, status: :created
       else
-        render json: { status: 'ERROR', message: 'User Not Created', data: @user.errors }, status: 422
+        render json: { status: 'ERROR', message: 'User Not Created', data: @user.errors.as_json }, status: 422
       end
     end
 
@@ -25,7 +27,7 @@ module Api::V1
       @user = User.find(params[:id])
   
       if @user.update(user_params)
-        render json: { status: 'SUCCESS', message: 'User Updated', data: @user }, status: :created
+        render json: { status: 'SUCCESS', message: 'User Updated', data: @user.as_json }, status: :created
       else
         render json: { status: 'ERROR', message: 'User Not Updated', data: @user.errors }, status: 400
       end

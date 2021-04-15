@@ -17,4 +17,23 @@ class Api::V1::PagesController < ApplicationController
       render json: {message: e.message, status: 500}
     end
   end
+
+  def daily_club_requests
+    begin
+      @club_requests = ClubRequest.where(updated_at: (Time.now - 24.hours)..Time.now)
+
+      render json: {
+        status: "SUCCESS",
+        message: "Last 24H Club Requests",
+        data: @club_requests.as_json(
+          include: [ 
+            user: { only: [:username, :picture] },
+            club: { only: [:name, :logo] }
+          ]
+        )
+      }, status: :ok
+    rescue StandardError => e
+      render json: {message: e.message, status: 500}
+    end
+  end
 end 

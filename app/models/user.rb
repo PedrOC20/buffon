@@ -8,6 +8,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
   has_many :comments
   has_many :evaluations
+  has_many :club_requests
+  has_many :contacts
   scope :active, ->{ where(active: true) }
 
   def generate_jwt

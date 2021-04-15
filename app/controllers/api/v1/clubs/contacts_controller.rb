@@ -4,9 +4,18 @@ class Api::V1::Clubs::ContactsController < ApplicationController
   def create
     @contact = Contact.new(contact_params)
     @contact.club = @club
+    @contact.user_id = current_user.id
     
     if @contact.save
-      render json: { status: "SUCCESS", message: "Contact created", data: @contact }, status: :created
+      render json: { 
+        status: "SUCCESS", 
+        message: "Contact created", 
+        data: @contact.as_json(
+          include: [
+            user: { only: [:username, :picture] }
+          ]
+        )
+      }, status: :created
     else
       render json: { status: 'ERROR', message: 'Contact Not Saved', data: @contact.errors }, status: 422
     end

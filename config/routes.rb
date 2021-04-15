@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get 'daily', to: 'pages#daily'
+      get 'daily_requests', to: 'pages#daily_club_requests'
       get 'admin', to: 'admins#index'
       resources :hitlists, only: [:index]
       resources :clubs do
