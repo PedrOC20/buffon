@@ -1,6 +1,6 @@
 module Api::V1
   class UsersController < ApplicationController
-    before_action :is_current_user?, only: :show
+    before_action :is_current_user?, only: [:show, :update]
     before_action :check_if_admin?, only: :create
 
     def create
