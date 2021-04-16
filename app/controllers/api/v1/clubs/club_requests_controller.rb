@@ -4,7 +4,7 @@ class Api::V1::Clubs::ClubRequestsController < ApplicationController
   def create
     @club_request = ClubRequest.new(club_request_params)
     @club_request.club = @club
-    @club_request.user_id = current_user.id
+    @club_request.user = current_user
     
     if @club_request.save
       render json: { 

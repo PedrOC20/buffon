@@ -4,7 +4,7 @@ class Api::V1::Clubs::ContactsController < ApplicationController
   def create
     @contact = Contact.new(contact_params)
     @contact.club = @club
-    @contact.user_id = current_user.id
+    @contact.user = current_user
     
     if @contact.save
       render json: { 
