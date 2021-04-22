@@ -28,7 +28,7 @@ class Api::V1::Clubs::ContactsController < ApplicationController
       :name, :email,
       :phone_number, :role,
       :importance, :description,
-      :how_met, :where_met
+      :how_met, :where_met, :protected
     )
   end
 

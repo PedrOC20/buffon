@@ -1,7 +1,7 @@
 class Api::V1::PagesController < ApplicationController
   def daily
     begin
-      @comments = Comment.where(updated_at: (Time.now - 24.hours)..Time.now)
+      @comments = Comment.where(updated_at: (Time.now - 48.hours)..Time.now)
 
       render json: {
         status: "SUCCESS",

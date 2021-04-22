@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_17_122841) do
+ActiveRecord::Schema.define(version: 2021_04_21_152525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_03_17_122841) do
     t.string "where_met"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "protected"
     t.index ["club_id"], name: "index_contacts_on_club_id"
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end

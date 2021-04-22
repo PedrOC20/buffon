@@ -3,6 +3,12 @@ module Api::V1
     before_action :is_current_user?, only: [:show, :update]
     before_action :check_if_admin?, only: :create
 
+    def index
+      @users = User.all
+
+      render json: {status: "SUCCESS", message: "Users", data: @users.as_json}, status: :ok
+    end
+
     def create
       @user = User.new(user_params)
 
@@ -56,7 +62,7 @@ module Api::V1
 
     def is_current_user?
       unless current_user.id.to_s == params[:id]
-        render json: {message: "fdshfaz"}
+        render json: {message: "Permission Denied"}, status: 101
       end
     end
   end
