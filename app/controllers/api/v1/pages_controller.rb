@@ -20,7 +20,7 @@ class Api::V1::PagesController < ApplicationController
 
   def daily_club_requests
     begin
-      @club_requests = ClubRequest.where(updated_at: (Time.now - 24.hours)..Time.now)
+      @club_requests = ClubRequest.where(updated_at: (Time.now - 48.hours)..Time.now)
 
       render json: {
         status: "SUCCESS",
