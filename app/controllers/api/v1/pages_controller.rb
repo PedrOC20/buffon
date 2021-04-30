@@ -1,11 +1,11 @@
 class Api::V1::PagesController < ApplicationController
   def daily
     begin
-      @comments = Comment.where(updated_at: (Time.now - 48.hours)..Time.now)
+      @comments = Comment.where(updated_at: (Time.now - 48.hours)..Time.now).order("updated_at desc")
 
       render json: {
         status: "SUCCESS",
-        message: "Last 24H Comments",
+        message: "Last 48H Comments",
         data: @comments.as_json(
           include: [ 
             user: { only: [:username, :picture] },
@@ -20,11 +20,11 @@ class Api::V1::PagesController < ApplicationController
 
   def daily_club_requests
     begin
-      @club_requests = ClubRequest.where(updated_at: (Time.now - 48.hours)..Time.now)
+      @club_requests = ClubRequest.where(updated_at: (Time.now - 48.hours)..Time.now).order("updated_at desc")
 
       render json: {
         status: "SUCCESS",
-        message: "Last 24H Club Requests",
+        message: "Last 48H Club Requests",
         data: @club_requests.as_json(
           include: [ 
             user: { only: [:username, :picture] },
